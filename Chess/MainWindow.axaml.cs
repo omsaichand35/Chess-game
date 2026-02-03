@@ -4,6 +4,7 @@ using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Markup.Xaml;
 using System;
+using System.Collections.Generic;
 
 namespace Chess
 {
@@ -41,6 +42,16 @@ namespace Chess
         private int selectedRow = -1;
         private int selectedCol = -1;
         private PieceColor currentTurn = PieceColor.White;
+
+        // Threefold repetition detection
+        private Dictionary<string, int> repetitionCounts = new Dictionary<string, int>();
+        private bool gameStarted = false;
+        private CancellationTokenSource aiVsAiCancellation;
+        
+        // Castling and en passant variables
+        private bool whiteKingMoved = false, whiteRookAMoved = false, whiteRookHMoved = false;
+        private bool blackKingMoved = false, blackRookAMoved = false, blackRookHMoved = false;
+        private string enPassantTarget = null;
 
         private void DrawBoard()
         {
@@ -343,7 +354,94 @@ namespace Chess
                 }
             }
 
-            return true;
+            // NOTE: Repetition tracking happens in CheckThreefoldRepetition() after move completion
+            // Removed duplicate tracking to prevent double-counting positions
+        }
+        private string ToFEN(PieceColor turn)
+        {
+            // Simplified FEN for current position (omit castling, en passant, etc.)
+            string fen = "";
+            for (int r = 0; r < 8; r++)
+            {
+                int emptyCount = 0;
+                for (int c = 0; c < 8; c++)
+                {
+                    var piece = board[r, c];
+                    if (piece == null)
+                    {
+                        emptyCount++;
+                    }
+                    else
+                    {
+                        if (emptyCount > 0)
+                        {
+                            fen += emptyCount.ToString();
+                            emptyCount = 0;
+                        }
+                        fen += piece.Color == PieceColor.White ? char.ToUpper(GetPieceGlyph(piece)[0]) : GetPieceGlyph(piece)[0];
+                    }
+                }
+                if (emptyCount > 0)
+                {
+                    fen += emptyCount.ToString();
+                }
+                fen += "/";
+            }
+            fen = fen.TrimEnd('/');
+            // Add turn
+            fen += turn == PieceColor.White ? " w " : " b ";
+            return fen;
+        }
+
+        private string GetPositionKey()
+        {
+            // Get complete FEN to track exact board position
+            string fen = ToFEN(currentTurn);
+            
+            // Include castling rights in position key
+            string castlingRights = "";
+            if (!whiteKingMoved)
+            {
+                if (!whiteRookH_Moved) castlingRights += "K";
+                if (!whiteRookA_Moved) castlingRights += "Q";
+            }
+            if (!blackKingMoved)
+            {
+                if (!blackRookH_Moved) castlingRights += "k";
+                if (!blackRookA_Moved) castlingRights += "q";
+            }
+            if (castlingRights == "") castlingRights = "-";
+            
+            // Include whose turn it is (already in FEN)
+            // Return complete position key for strict threefold repetition
+            return $"{fen}|{castlingRights}";
+        }
+
+        private bool CheckThreefoldRepetition()
+        {
+            // This should only be called AFTER a move is made
+            var key = GetPositionKey();
+            
+            // Count how many times this exact position has occurred
+            if (!repetitionCounts.ContainsKey(key))
+            {
+                repetitionCounts[key] = 1;
+            }
+            else
+            {
+                repetitionCounts[key]++;
+            }
+
+            // If the same position has occurred 3 times, it's a draw
+            if (repetitionCounts[key] >= 3)
+            {
+                gameStarted = false;
+                aiVsAiCancellation?.Cancel();
+                ShowGameOver("Draw by threefold repetition!");
+                return true;
+            }
+
+            return false;
         }
     }
 }
