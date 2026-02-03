@@ -1,0 +1,7 @@
+
+
+# User-specific
+*.user
+*.suo
+*.cache
+*.log

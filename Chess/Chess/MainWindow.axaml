@@ -1,0 +1,626 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="Chess.MainWindow"
+        Width="1200"
+        Height="800"
+        Background="#302E2B"
+        Title="Chess">
+
+	<Grid>
+		<!-- HOME LAYOUT -->
+		<Grid x:Name="HomeLayout" ColumnDefinitions="220,*">
+			<!-- LEFT SIDEBAR -->
+			<Border Background="#262421" Padding="16">
+				<StackPanel Spacing="16">
+					<TextBlock Text="♟ CHESS" FontSize="24" FontWeight="Bold" Foreground="White" HorizontalAlignment="Center"/>
+					
+					<Button Content="Home" Height="40" Background="Transparent" Foreground="#C7C7C6" HorizontalContentAlignment="Left" Click="HomeClicked"/>
+					<Button Content="Play Bot" Height="40" Background="Transparent" Foreground="#C7C7C6" HorizontalContentAlignment="Left" Click="NewGameClicked"/>
+				</StackPanel>
+			</Border>
+
+			<!-- HOME CONTENT -->
+			<Grid Column="1" Background="#302E2B">
+				
+				<!-- HOME VIEW -->
+				<Border x:Name="HomeView" Padding="24" IsVisible="True">
+					<StackPanel Spacing="24" HorizontalAlignment="Center" VerticalAlignment="Center" MaxWidth="800">
+						<!-- PROFILE -->
+						<StackPanel x:Name="ProfileSection"
+									Orientation="Horizontal"
+									Spacing="12"
+									HorizontalAlignment="Center">
+							<Ellipse Width="48"
+									 Height="48"
+									 Fill="Gray"/>
+							<StackPanel>
+								<TextBlock Text="sai123chand"
+										   FontSize="20"
+										   Foreground="White"/>
+								<TextBlock Text="Welcome back!"
+										   Foreground="#AAAAAA"/>
+							</StackPanel>
+						</StackPanel>
+						
+						<TextBlock Text="Welcome to Chess!" 
+								   Foreground="White" 
+								   FontSize="32" 
+								   FontWeight="Bold"
+								   HorizontalAlignment="Center"/>
+						<TextBlock Text="Choose a game mode to start playing" 
+								   Foreground="#AAAAAA" 
+								   FontSize="16"
+								   HorizontalAlignment="Center"/>
+
+						<!-- GAME MODE CARDS -->
+						<Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="20" RowSpacing="20" Margin="0,30,0,0">
+							
+							<!-- Play Computer Card -->
+							<Border Grid.Column="0" Grid.Row="0"
+									Background="#262421"
+									CornerRadius="12"
+									Padding="24"
+									Cursor="Hand">
+								<Border.Styles>
+									<Style Selector="Border:pointerover">
+										<Setter Property="Background" Value="#353330"/>
+									</Style>
+								</Border.Styles>
+								<StackPanel Spacing="12">
+									<TextBlock Text="🤖" FontSize="48" HorizontalAlignment="Center"/>
+									<TextBlock Text="Play Computer" 
+											   FontSize="22" 
+											   FontWeight="Bold" 
+											   Foreground="White"
+											   HorizontalAlignment="Center"/>
+									<TextBlock Text="Play against AI with adjustable difficulty" 
+											   FontSize="14" 
+											   Foreground="#AAAAAA"
+											   TextWrapping="Wrap"
+											   HorizontalAlignment="Center"
+											   TextAlignment="Center"/>
+									<Button Content="Play Now"
+											Background="#81B64C"
+											Foreground="White"
+											FontWeight="Bold"
+											Height="45"
+											HorizontalAlignment="Stretch"
+											HorizontalContentAlignment="Center"
+											CornerRadius="6"
+											Margin="0,10,0,0"
+											Click="PlayComputerClicked"/>
+								</StackPanel>
+							</Border>
+
+							<!-- Play Friend Card -->
+							<Border Grid.Column="1" Grid.Row="0"
+									Background="#262421"
+									CornerRadius="12"
+									Padding="24"
+									Cursor="Hand">
+								<Border.Styles>
+									<Style Selector="Border:pointerover">
+										<Setter Property="Background" Value="#353330"/>
+									</Style>
+								</Border.Styles>
+								<StackPanel Spacing="12">
+									<TextBlock Text="👥" FontSize="48" HorizontalAlignment="Center"/>
+									<TextBlock Text="Play Friend" 
+											   FontSize="22" 
+											   FontWeight="Bold" 
+											   Foreground="White"
+											   HorizontalAlignment="Center"/>
+									<TextBlock Text="Play locally on the same device" 
+											   FontSize="14" 
+											   Foreground="#AAAAAA"
+											   TextWrapping="Wrap"
+											   HorizontalAlignment="Center"
+											   TextAlignment="Center"/>
+									<Button Content="Play Now"
+											Background="#4A9EFF"
+											Foreground="White"
+											FontWeight="Bold"
+											Height="45"
+											HorizontalAlignment="Stretch"
+											HorizontalContentAlignment="Center"
+											CornerRadius="6"
+											Margin="0,10,0,0"
+											Click="PlayFriendClicked"/>
+								</StackPanel>
+							</Border>
+
+							<!-- Play Online Card -->
+							<Border Grid.Column="0" Grid.Row="1"
+									Background="#262421"
+									CornerRadius="12"
+									Padding="24"
+									Cursor="Hand">
+								<Border.Styles>
+									<Style Selector="Border:pointerover">
+										<Setter Property="Background" Value="#353330"/>
+									</Style>
+								</Border.Styles>
+								<StackPanel Spacing="12">
+									<TextBlock Text="🌐" FontSize="48" HorizontalAlignment="Center"/>
+									<TextBlock Text="Play Online" 
+											   FontSize="22" 
+											   FontWeight="Bold" 
+											   Foreground="White"
+											   HorizontalAlignment="Center"/>
+									<TextBlock Text="Host or join with a room code" 
+											   FontSize="14" 
+											   Foreground="#AAAAAA"
+											   TextWrapping="Wrap"
+											   HorizontalAlignment="Center"
+											   TextAlignment="Center"/>
+									<Button Content="Play Now"
+											Background="#7B5CFF"
+											Foreground="White"
+											FontWeight="Bold"
+											Height="45"
+											HorizontalAlignment="Stretch"
+											HorizontalContentAlignment="Center"
+											CornerRadius="6"
+											Margin="0,10,0,0"
+											Click="PlayOnlineClicked"/>
+								</StackPanel>
+							</Border>
+
+							<!-- AI vs AI Card -->
+							<Border Grid.Column="1" Grid.Row="1"
+									Background="#262421"
+									CornerRadius="12"
+									Padding="24"
+									Cursor="Hand">
+								<Border.Styles>
+									<Style Selector="Border:pointerover">
+										<Setter Property="Background" Value="#353330"/>
+									</Style>
+								</Border.Styles>
+								<StackPanel Spacing="12">
+									<TextBlock Text="🤖" FontSize="48" HorizontalAlignment="Center"/>
+									<TextBlock Text="AI vs AI" 
+											   FontSize="22" 
+											   FontWeight="Bold" 
+											   Foreground="White"
+											   HorizontalAlignment="Center"/>
+									<TextBlock Text="Watch two AIs play" 
+											   FontSize="14" 
+											   Foreground="#AAAAAA"
+											   TextWrapping="Wrap"
+											   HorizontalAlignment="Center"
+											   TextAlignment="Center"/>
+									<Button Content="Configure"
+											Background="#FF9F1C"
+											Foreground="White"
+											FontWeight="Bold"
+											Height="45"
+											HorizontalAlignment="Stretch"
+											HorizontalContentAlignment="Center"
+											CornerRadius="6"
+											Margin="0,10,0,0"
+											Click="PlayAiVsAiClicked"/>
+								</StackPanel>
+							</Border>
+						</Grid>
+					</StackPanel>
+				</Border>
+
+				<!-- GAME UI (Layout like Chess.com) -->
+				<Grid x:Name="GameUI" ColumnDefinitions="*, 400" IsVisible="False">
+					
+					<!-- LEFT: BOARD AREA -->
+					<Grid Grid.Column="0" RowDefinitions="Auto,Auto,*,Auto,Auto" Margin="20">
+						
+						<!-- Opponent Bar -->
+						<Grid Grid.Row="0" Margin="0,0,0,10" ColumnDefinitions="Auto,*,Auto">
+							<StackPanel Orientation="Horizontal" Spacing="10">
+								<Border Width="40" Height="40" CornerRadius="5" Background="#444">
+									<TextBlock Text="?" Foreground="#AAA" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+								</Border>
+								<StackPanel VerticalAlignment="Center">
+									<TextBlock x:Name="OpponentNameText" Text="Opponent" Foreground="White" FontWeight="Bold"/>
+									<TextBlock Text="1500" Foreground="#AAA" FontSize="12"/>
+								</StackPanel>
+							</StackPanel>
+							<Border Grid.Column="2" Background="#262421" CornerRadius="4" Padding="10,5">
+								<TextBlock Text="10:00" Foreground="White" FontWeight="Bold" FontSize="16"/>
+							</Border>
+						</Grid>
+
+						<!-- Black Captured Pieces (Top) -->
+						<Border Grid.Row="1" Background="#1a1816" CornerRadius="4" Padding="8,6" Margin="0,0,0,8">
+							<StackPanel Orientation="Horizontal" Spacing="8">
+								<StackPanel x:Name="BlackCapturedPieces" Orientation="Horizontal" Spacing="2"/>
+								<TextBlock x:Name="BlackMaterialAdvantage" 
+										   Foreground="#81B64C" 
+										   FontWeight="Bold" 
+										   FontSize="14" 
+										   VerticalAlignment="Center"
+										   Margin="8,0,0,0"/>
+							</StackPanel>
+						</Border>
+
+						<!-- Board + Eval Bar -->
+						<Grid x:Name="BoardArea"
+							  Grid.Row="2"
+							  ColumnDefinitions="Auto,16"
+							  RowDefinitions="Auto,Auto"
+							  ColumnSpacing="12"
+							  HorizontalAlignment="Center"
+							  VerticalAlignment="Center">
+							<Grid x:Name="ChessBoard"
+							      Width="600"
+							      Height="600"
+							      RowDefinitions="*,*,*,*,*,*,*,*"
+							      ColumnDefinitions="*,*,*,*,*,*,*,*"
+							      Grid.Column="0"
+							      Grid.Row="0">
+							</Grid>
+
+							<Border Grid.Column="1"
+								        Grid.Row="0"
+								        Width="16"
+								        Height="600"
+								        Background="#111"
+								        CornerRadius="4">
+								<Grid x:Name="EvaluationFill"
+								      RowDefinitions="*,*">
+									<Border x:Name="EvalBlack"
+										        Background="#403D39"
+										        Grid.Row="0" CornerRadius="4,4,0,0"/>
+									<Border x:Name="EvalWhite"
+										        Background="#F5F5F5"
+										        Grid.Row="1" CornerRadius="0,0,4,4"/>
+								</Grid>
+							</Border>
+
+							<StackPanel Grid.Column="0"
+									            Grid.Row="1"
+									            Orientation="Horizontal"
+									            HorizontalAlignment="Left"
+									            Spacing="12"
+									            Margin="0,8,0,0">
+								<TextBlock Text="W" Foreground="#AAA" FontSize="12"/>
+								<TextBlock x:Name="WdlWinText" Text="0" Foreground="White" FontSize="12"/>
+								<TextBlock Text="D" Foreground="#AAA" FontSize="12"/>
+								<TextBlock x:Name="WdlDrawText" Text="0" Foreground="White" FontSize="12"/>
+								<TextBlock Text="L" Foreground="#AAA" FontSize="12"/>
+								<TextBlock x:Name="WdlLossText" Text="0" Foreground="White" FontSize="12"/>
+							</StackPanel>
+						</Grid>
+
+						<!-- White Captured Pieces (Bottom) -->
+						<Border Grid.Row="3" Background="#1a1816" CornerRadius="4" Padding="8,6" Margin="0,8,0,10">
+							<StackPanel Orientation="Horizontal" Spacing="8">
+								<StackPanel x:Name="WhiteCapturedPieces" Orientation="Horizontal" Spacing="2"/>
+								<TextBlock x:Name="WhiteMaterialAdvantage" 
+									   Foreground="#81B64C" 
+									   FontWeight="Bold" 
+									   FontSize="14" 
+									   VerticalAlignment="Center"
+									   Margin="8,0,0,0"/>
+							</StackPanel>
+						</Border>
+
+						<!-- Player Bar -->
+						<Grid Grid.Row="4" Margin="0,0,0,0" ColumnDefinitions="Auto,*,Auto">
+							<StackPanel Orientation="Horizontal" Spacing="10">
+								<Border Width="40" Height="40" CornerRadius="5" Background="#444">
+									<TextBlock Text="S" Foreground="#AAA" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+								</Border>
+								<StackPanel VerticalAlignment="Center">
+									<TextBlock x:Name="PlayerNameText" Text="sai123chand" Foreground="White" FontWeight="Bold"/>
+									<TextBlock Text="800" Foreground="#AAA" FontSize="12"/>
+								</StackPanel>
+							</StackPanel>
+							<Border Grid.Column="2" Background="#262421" CornerRadius="4" Padding="10,5">
+								<TextBlock Text="10:00" Foreground="White" FontWeight="Bold" FontSize="16"/>
+							</Border>
+						</Grid>
+					</Grid>
+
+					<!-- RIGHT: MENU SIDEBAR -->
+					<Border Grid.Column="1" Background="#262421" Padding="20">
+						<StackPanel Spacing="16">
+							<!-- Tabs -->
+							<Grid ColumnDefinitions="*,*,*">
+								<Button Background="Transparent" Foreground="White" FontWeight="Bold" HorizontalAlignment="Center" Content="New Game" BorderThickness="0,0,0,2" BorderBrush="#81B64C"/>
+								<Button Background="Transparent" Foreground="#AAA" HorizontalAlignment="Center" Content="Games"/>
+								<Button Background="Transparent" Foreground="#AAA" HorizontalAlignment="Center" Content="Players"/>
+							</Grid>
+							
+							<Border Height="1" Background="#333" Margin="0,0,0,10"/>
+
+							<!-- Time Control -->
+							<Button Height="50" Background="#302E2B" CornerRadius="5" HorizontalContentAlignment="Stretch">
+								<Grid ColumnDefinitions="Auto,*,Auto">
+									<TextBlock Grid.Column="0" Text="⏱" Foreground="#AAA" FontSize="20" VerticalAlignment="Center" Margin="10,0"/>
+									<StackPanel Grid.Column="1" VerticalAlignment="Center">
+										<TextBlock Text="10 min" Foreground="White" FontWeight="Bold"/>
+										<TextBlock Text="Rapid" Foreground="#AAA" FontSize="12"/>
+									</StackPanel>
+									<TextBlock Grid.Column="2" Text="▼" Foreground="#AAA" VerticalAlignment="Center" Margin="10,0"/>
+								</Grid>
+							</Button>
+
+							<!-- Difficulty Selection (Moved here) -->
+							<TextBlock Text="Bot Strength" Foreground="#AAA" FontSize="12" Margin="0,10,0,0"/>
+							<ComboBox x:Name="DifficultyBox" SelectedIndex="1" HorizontalAlignment="Stretch" Background="#302E2B" Foreground="White">
+									<ComboBoxItem Content="Beginner I" Tag="1"/>
+									<ComboBoxItem Content="Beginner II" Tag="2"/>
+									<ComboBoxItem Content="Beginner III" Tag="3"/>
+									<ComboBoxItem Content="Easy I" Tag="4"/>
+									<ComboBoxItem Content="Easy II" Tag="5"/>
+									<ComboBoxItem Content="Easy III" Tag="6"/>
+									<ComboBoxItem Content="Intermediate I" Tag="7"/>
+									<ComboBoxItem Content="Intermediate II" Tag="8"/>
+									<ComboBoxItem Content="Intermediate III" Tag="9"/>
+									<ComboBoxItem Content="Advanced I" Tag="10"/>
+									<ComboBoxItem Content="Advanced II" Tag="11"/>
+									<ComboBoxItem Content="Advanced III" Tag="12"/>
+									<ComboBoxItem Content="Expert I" Tag="13"/>
+									<ComboBoxItem Content="Expert II" Tag="14"/>
+									<ComboBoxItem Content="Stockfish Max" Tag="15"/>
+							</ComboBox>
+
+							<!-- Start Button -->
+							<Button Content="Start Game"
+									Height="60"
+									Background="#81B64C"
+									Foreground="White"
+									FontWeight="Bold"
+									FontSize="24"
+									CornerRadius="5"
+									HorizontalContentAlignment="Center"
+									VerticalContentAlignment="Center"
+									Click="StartGameClicked"
+									Margin="0,10,0,0"/>
+
+							<!-- Other Buttons -->
+							<Button Content="Custom Challenge" Height="50" Background="#302E2B" Foreground="#AAA" CornerRadius="5"/>
+							<Button Content="Play a Friend" Height="50" Background="#302E2B" Foreground="#AAA" CornerRadius="5"/>
+							<Button Content="Tournaments" Height="50" Background="#302E2B" Foreground="#AAA" CornerRadius="5"/>
+						</StackPanel>
+					</Border>
+				</Grid>
+			</Grid>
+		</Grid>
+
+		<!-- Color Selection Dialog -->
+		<Border x:Name="ColorSelectionDialog"
+				Background="#CC000000"
+				IsVisible="False"
+				ZIndex="1000">
+			<Border Background="#262421"
+					CornerRadius="12"
+					Padding="32"
+					MaxWidth="400"
+					HorizontalAlignment="Center"
+					VerticalAlignment="Center">
+				<StackPanel Spacing="24">
+					<TextBlock Text="Choose Your Color"
+							   FontSize="24"
+							   FontWeight="Bold"
+							   Foreground="White"
+							   HorizontalAlignment="Center"/>
+					
+					<TextBlock Text="Select which color you want to play as"
+							   FontSize="14"
+							   Foreground="#AAA"
+							   HorizontalAlignment="Center"
+							   TextAlignment="Center"/>
+
+					<StackPanel Spacing="12">
+						<!-- White -->
+						<Button x:Name="SelectWhiteButton"
+								Background="#302E2B"
+								Height="60"
+								HorizontalAlignment="Stretch"
+								CornerRadius="8"
+								Click="SelectWhiteColor">
+							<StackPanel Orientation="Horizontal" Spacing="15">
+								<TextBlock Text="♔" FontSize="32" Foreground="White" VerticalAlignment="Center"/>
+								<StackPanel VerticalAlignment="Center">
+									<TextBlock Text="Play as White" FontSize="16" FontWeight="Bold" Foreground="White"/>
+									<TextBlock Text="You move first" FontSize="12" Foreground="#AAA"/>
+								</StackPanel>
+							</StackPanel>
+						</Button>
+
+						<!-- Black -->
+						<Button x:Name="SelectBlackButton"
+								Background="#302E2B"
+								Height="60"
+								HorizontalAlignment="Stretch"
+								CornerRadius="8"
+								Click="SelectBlackColor">
+							<StackPanel Orientation="Horizontal" Spacing="15">
+								<TextBlock Text="♚" FontSize="32" Foreground="#888" VerticalAlignment="Center"/>
+								<StackPanel VerticalAlignment="Center">
+									<TextBlock Text="Play as Black" FontSize="16" FontWeight="Bold" Foreground="White"/>
+									<TextBlock Text="Computer moves first" FontSize="12" Foreground="#AAA"/>
+								</StackPanel>
+							</StackPanel>
+						</Button>
+
+						<!-- Random -->
+						<Button x:Name="SelectRandomButton"
+								Background="#302E2B"
+								Height="60"
+								HorizontalAlignment="Stretch"
+								CornerRadius="8"
+								Click="SelectRandomColor">
+							<StackPanel Orientation="Horizontal" Spacing="15">
+								<TextBlock Text="🎲" FontSize="32" VerticalAlignment="Center"/>
+								<StackPanel VerticalAlignment="Center">
+									<TextBlock Text="Random Color" FontSize="16" FontWeight="Bold" Foreground="White"/>
+									<TextBlock Text="50/50 chance" FontSize="12" Foreground="#AAA"/>
+								</StackPanel>
+							</StackPanel>
+						</Button>
+					</StackPanel>
+
+					<Button Content="Cancel"
+							Background="Transparent"
+							Foreground="#AAA"
+							Height="40"
+							HorizontalAlignment="Stretch"
+							Click="CancelColorSelection"/>
+				</StackPanel>
+			</Border>
+		</Border>
+
+		<!-- Online Setup Dialog -->
+		<Border x:Name="OnlineSetupDialog"
+				Background="#CC000000"
+				IsVisible="False"
+				ZIndex="1001">
+			<Border Background="#262421"
+					CornerRadius="12"
+					Padding="32"
+					MaxWidth="420"
+					HorizontalAlignment="Center"
+					VerticalAlignment="Center">
+				<StackPanel Spacing="20">
+					<TextBlock Text="Online Multiplayer"
+							   FontSize="24"
+							   FontWeight="Bold"
+							   Foreground="White"
+							   HorizontalAlignment="Center"/>
+					<TextBlock Text="Host a game or join using IP:PORT (e.g., 192.168.1.10:5000)"
+							   FontSize="13"
+							   Foreground="#AAA"
+							   TextWrapping="Wrap"
+							   TextAlignment="Center"/>
+
+					<StackPanel Spacing="8">
+						<TextBlock Text="Room Code / IP:PORT" Foreground="#AAA" FontSize="12"/>
+						<TextBox x:Name="RoomCodeBox"
+									Background="#302E2B"
+									Foreground="White"
+									Watermark="192.168.1.10:5000 or 5000"
+									HorizontalAlignment="Stretch"/>
+					</StackPanel>
+
+					<Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+						<Button Grid.Column="0"
+								Content="Host Game"
+								Background="#81B64C"
+								Foreground="White"
+								FontWeight="Bold"
+								Height="45"
+								CornerRadius="6"
+								Click="HostOnlineGameClicked"/>
+						<Button Grid.Column="1"
+								Content="Join Game"
+								Background="#4A9EFF"
+								Foreground="White"
+								FontWeight="Bold"
+								Height="45"
+								CornerRadius="6"
+								Click="JoinOnlineGameClicked"/>
+					</Grid>
+
+					<Button Content="Cancel"
+							Background="Transparent"
+							Foreground="#AAA"
+							Height="40"
+							Click="CancelOnlineSetup"/>
+				</StackPanel>
+			</Border>
+		</Border>
+
+		<!-- AI vs AI Setup Dialog -->
+		<Border x:Name="AiVsAiSetupDialog"
+				Background="#CC000000"
+				IsVisible="False"
+				ZIndex="1002">
+			<Border Background="#262421"
+					CornerRadius="12"
+					Padding="28"
+					MaxWidth="520"
+					HorizontalAlignment="Center"
+					VerticalAlignment="Center">
+				<StackPanel Spacing="18">
+					<TextBlock Text="AI vs AI Setup"
+							   FontSize="22"
+							   FontWeight="Bold"
+							   Foreground="White"
+							   HorizontalAlignment="Center"/>
+					<TextBlock Text="Choose names, levels, and moods for each AI"
+							   FontSize="13"
+							   Foreground="#AAA"
+							   TextAlignment="Center"/>
+
+					<Grid ColumnDefinitions="*,*" ColumnSpacing="16">
+						<StackPanel Grid.Column="0" Spacing="10">
+							<TextBlock Text="White AI" Foreground="White" FontWeight="Bold"/>
+							<TextBox x:Name="AiWhiteNameBox" Background="#302E2B" Foreground="White" Watermark="White AI" Text="Alpha"/>
+							<TextBlock Text="Level" Foreground="#AAA" FontSize="12"/>
+							<ComboBox x:Name="AiWhiteLevelBox" SelectedIndex="1" Background="#302E2B" Foreground="White">
+								<ComboBoxItem Content="Beginner I" Tag="1"/>
+								<ComboBoxItem Content="Beginner II" Tag="2"/>
+								<ComboBoxItem Content="Beginner III" Tag="3"/>
+								<ComboBoxItem Content="Easy I" Tag="4"/>
+								<ComboBoxItem Content="Easy II" Tag="5"/>
+								<ComboBoxItem Content="Easy III" Tag="6"/>
+								<ComboBoxItem Content="Intermediate I" Tag="7"/>
+								<ComboBoxItem Content="Intermediate II" Tag="8"/>
+								<ComboBoxItem Content="Intermediate III" Tag="9"/>
+								<ComboBoxItem Content="Advanced I" Tag="10"/>
+								<ComboBoxItem Content="Advanced II" Tag="11"/>
+								<ComboBoxItem Content="Advanced III" Tag="12"/>
+								<ComboBoxItem Content="Expert I" Tag="13"/>
+								<ComboBoxItem Content="Expert II" Tag="14"/>
+								<ComboBoxItem Content="Stockfish Max" Tag="15"/>
+							</ComboBox>
+							<TextBlock Text="Mood" Foreground="#AAA" FontSize="12"/>
+							<ComboBox x:Name="AiWhiteMoodBox" SelectedIndex="0" Background="#302E2B" Foreground="White">
+								<ComboBoxItem Content="Calm"/>
+								<ComboBoxItem Content="Aggressive"/>
+								<ComboBoxItem Content="Defensive"/>
+								<ComboBoxItem Content="Random"/>
+							</ComboBox>
+						</StackPanel>
+
+						<StackPanel Grid.Column="1" Spacing="10">
+							<TextBlock Text="Black AI" Foreground="White" FontWeight="Bold"/>
+							<TextBox x:Name="AiBlackNameBox" Background="#302E2B" Foreground="White" Watermark="Black AI" Text="Beta"/>
+							<TextBlock Text="Level" Foreground="#AAA" FontSize="12"/>
+							<ComboBox x:Name="AiBlackLevelBox" SelectedIndex="2" Background="#302E2B" Foreground="White">
+								<ComboBoxItem Content="Beginner I" Tag="1"/>
+								<ComboBoxItem Content="Beginner II" Tag="2"/>
+								<ComboBoxItem Content="Beginner III" Tag="3"/>
+								<ComboBoxItem Content="Easy I" Tag="4"/>
+								<ComboBoxItem Content="Easy II" Tag="5"/>
+								<ComboBoxItem Content="Easy III" Tag="6"/>
+								<ComboBoxItem Content="Intermediate I" Tag="7"/>
+								<ComboBoxItem Content="Intermediate II" Tag="8"/>
+								<ComboBoxItem Content="Intermediate III" Tag="9"/>
+								<ComboBoxItem Content="Advanced I" Tag="10"/>
+								<ComboBoxItem Content="Advanced II" Tag="11"/>
+								<ComboBoxItem Content="Advanced III" Tag="12"/>
+								<ComboBoxItem Content="Expert I" Tag="13"/>
+								<ComboBoxItem Content="Expert II" Tag="14"/>
+								<ComboBoxItem Content="Stockfish Max" Tag="15"/>
+							</ComboBox>
+							<TextBlock Text="Mood" Foreground="#AAA" FontSize="12"/>
+							<ComboBox x:Name="AiBlackMoodBox" SelectedIndex="0" Background="#302E2B" Foreground="White">
+								<ComboBoxItem Content="Calm"/>
+								<ComboBoxItem Content="Aggressive"/>
+								<ComboBoxItem Content="Defensive"/>
+								<ComboBoxItem Content="Random"/>
+							</ComboBox>
+						</StackPanel>
+					</Grid>
+
+					<Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+						<Button Grid.Column="0" Content="Start Match" Background="#81B64C" Foreground="White" FontWeight="Bold" Height="45" CornerRadius="6" Click="StartAiVsAiMatch"/>
+						<Button Grid.Column="1" Content="Cancel" Background="Transparent" Foreground="#AAA" Height="45" Click="CancelAiVsAiSetup"/>
+					</Grid>
+				</StackPanel>
+			</Border>
+		</Border>
+	</Grid>
+</Window>

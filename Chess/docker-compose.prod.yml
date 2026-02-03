@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  chess:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: chess-prod
+    restart: unless-stopped
+    environment:
+      - STOCKFISH_PATH=/app/stockfish/stockfish
+      - DOTNET_EnableDiagnostics=0
+    volumes:
+      # Named volumes for persistence
+      - chess-stockfish:/app/stockfish
+      - chess-data:/app/data
+    networks:
+      - chess-network
+    ports:
+      - "5000:5000"
+    healthcheck:
+      test: ["CMD", "test", "-f", "/app/Chess"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  chess-stockfish:
+    driver: local
+  chess-data:
+    driver: local
+
+networks:
+  chess-network:
+    driver: bridge

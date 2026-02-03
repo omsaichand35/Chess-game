@@ -1,0 +1,94 @@
+# Windows Installer (WiX) for Chess Application
+# Usage: msbuild Chess.wixproj
+
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+    <Product Id="*" 
+             Name="Chess" 
+             Language="1033" 
+             Version="1.0.0.0" 
+             Manufacturer="Chess Team"
+             UpgradeCode="12345678-1234-1234-1234-123456789012">
+        
+        <Package InstallerVersion="200" 
+                 Compressed="yes" 
+                 AdminExecuteLevel="asInvoker" />
+        
+        <MajorUpgrade DowngradeErrorMessage="A newer version of Chess is already installed." />
+        
+        <MediaTemplate EmbedCab="yes" />
+        
+        <Feature Id="ProductFeature" 
+                 Title="Chess Application" 
+                 Level="1"
+                 AllowAdvertise="no"
+                 InstallDefault="local">
+            <ComponentRef Id="MainExecutable" />
+            <ComponentRef Id="AppFiles" />
+            <ComponentRef Id="DesktopShortcut" />
+            <ComponentRef Id="StartMenuShortcut" />
+        </Feature>
+        
+        <UIRef Id="WixUI_InstallDir" />
+        <UIRef Id="WixUI_ErrorProgressText" />
+        
+        <Icon Id="chess.ico" SourceFile="resources/chess-icon.ico" />
+        <Property Id="ARPPRODUCTICON" Value="chess.ico" />
+        
+        <Property Id="INSTALLFOLDER" Value="Program Files\Chess" />
+        <InstallScope Scope="perMachine" />
+        
+    </Product>
+    
+    <Fragment>
+        <Directory Id="TARGETDIR" Name="SourceDir">
+            <Directory Id="ProgramFilesFolder">
+                <Directory Id="INSTALLFOLDER" Name="Chess" />
+            </Directory>
+            <Directory Id="ProgramMenuFolder">
+                <Directory Id="ApplicationProgramsFolder" Name="Chess" />
+            </Directory>
+            <Directory Id="DesktopFolder" Name="Desktop" />
+        </Directory>
+    </Fragment>
+    
+    <Fragment>
+        <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+            <Component Id="MainExecutable" Guid="*">
+                <File Id="ChessExe" Source="publish\Chess.exe" KeyPath="yes" />
+            </Component>
+            <Component Id="AppFiles" Guid="*">
+                <File Source="publish\*.dll" />
+            </Component>
+        </ComponentGroup>
+        
+        <Component Id="DesktopShortcut" Directory="DesktopFolder" Guid="*">
+            <Shortcut Id="DesktopChess" 
+                      Target="[INSTALLFOLDER]Chess.exe" 
+                      Name="Chess"
+                      Description="Chess Game"
+                      WorkingDirectory="INSTALLFOLDER" />
+            <RegistryValue Root="HKCU" 
+                           Key="Software\Chess" 
+                           Name="installed" 
+                           Value="1" 
+                           Type="integer" 
+                           KeyPath="yes" />
+        </Component>
+        
+        <Component Id="StartMenuShortcut" Directory="ApplicationProgramsFolder" Guid="*">
+            <Shortcut Id="StartMenuChess" 
+                      Target="[INSTALLFOLDER]Chess.exe" 
+                      Name="Chess"
+                      Description="Chess Game"
+                      WorkingDirectory="INSTALLFOLDER" />
+            <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall" />
+            <RegistryValue Root="HKCU" 
+                           Key="Software\Chess\StartMenu" 
+                           Name="installed" 
+                           Value="1" 
+                           Type="integer" 
+                           KeyPath="yes" />
+        </Component>
+    </Fragment>
+</Wix>
